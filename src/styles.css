@@ -1,3 +1,8 @@
+:root {
+    --primary-color: #0E2940;
+    --secondary-color: #D9D9D9;
+}
+
 html {
     background-color: #ffffff;
 }
@@ -5,9 +10,13 @@ html {
 html,
 body {
     height: 100%;
-}
-
-body {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1{
+    margin-left: 2em;
+    color: var(--secondary-color);
 }

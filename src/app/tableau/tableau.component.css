@@ -1,6 +1,40 @@
-.container {
+.tableau-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 1em;
+}
+
+#sidebar-container {
+    background-color: #0E2940;
+    z-index: 0;
+}
+
+mat-sidenav-content {
+    margin-left: 3.5em;
+    overflow: visible;
+}
+
+mat-sidenav-container {
+    overflow: visible;
+}
+
+#sidebar-nav {
+    padding: 20px 20px 20px 0;
+}
+
+#sidebar-drawer {
+    width: 20%;
+    text-align: center;
+    height: 100%;
+}
+
+#options-toggle-button {
+    color: var(--secondary-color);
+    margin-left: 4em;
+    cursor: pointer;
+}
+
+#options-toggle-button-label {
+    cursor: pointer;
 }

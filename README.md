@@ -1,8 +1,6 @@
 # Marine Corps Customer Experience Enhancement
 GitHub repository for CS5934 Capstone Project for Marine Corps Community Services (MCCS/HQ USMC)
 
-Am I looking at head?
-
 # Project Description (from Canvas)
 ## Marine Corps Customer Experience Enhancement
 

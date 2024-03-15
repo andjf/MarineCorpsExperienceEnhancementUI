@@ -1,0 +1,21 @@
+<div class="chatbot-container" [ngClass]="{ 'chatbot-open': showChatbot }">
+    <div class="chatbot-header">
+        <button class="toggle-button" (click)="toggleChatbot()">
+            <fa-icon [icon]="chevronUp"></fa-icon>
+        </button>
+        <h2>Chatbot</h2>
+    </div>
+    <div class="chatbot-content" #chatbotContent>
+        <div *ngFor="let message of chatMessages" class="message"
+             [ngClass]="{'chatbot-message': message.sender === 'chatbot', 'user-message': message.sender === 'user'}">{{ message.content }}
+        </div>
+    </div>
+    <div class="input-container">
+        <textarea #chatInput id="chat-input" rows="1" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()"
+                  (input)="adjustTextareaHeight()" placeholder="Type your message..."></textarea>
+        <button id="send-button" (click)="sendMessage()">
+            <fa-icon [icon]="paperPlane"></fa-icon>
+        </button>
+    </div>
+</div>
+  
