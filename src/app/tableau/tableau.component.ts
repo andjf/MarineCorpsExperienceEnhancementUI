@@ -17,7 +17,18 @@ import { ChatbotComponent } from "../chatbot/chatbot.component";
 @Component({
     selector: "app-tableau",
     standalone: true,
-    imports: [TableauModule, ChatbotComponent, MatDrawerContainer, MatDrawer, MatButton, MatDrawerContent, FaIconComponent, MatSidenavContainer, MatSidenav, MatSidenavContent],
+    imports: [
+        TableauModule,
+        ChatbotComponent,
+        MatDrawerContainer,
+        MatDrawer,
+        MatButton,
+        MatDrawerContent,
+        FaIconComponent,
+        MatSidenavContainer,
+        MatSidenav,
+        MatSidenavContent
+    ],
     templateUrl: "./tableau.component.html",
     styleUrl: "./tableau.component.css",
 })
