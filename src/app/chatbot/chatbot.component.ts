@@ -102,7 +102,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
         textarea.style.height = `${textarea.scrollHeight}px`;
     }
 
-    async converse(chat: string) {
+    async converse(chat: string): Promise<Message> {
         if (!this.model) return DEFAULT_ERROR_MESSAGE;
         // prompt still needs fixing
         // eslint-disable-next-line max-len
