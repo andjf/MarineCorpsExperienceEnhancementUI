@@ -18,4 +18,6 @@
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
-<app-chatbot></app-chatbot>
+<div *ngIf="apiKey">
+    <app-chatbot [apiKey]="apiKey"></app-chatbot>
+</div>
