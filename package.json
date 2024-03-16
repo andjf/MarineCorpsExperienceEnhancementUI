@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy:gh": "ng deploy --base-href=https://andjf.github.io/MarineCorpsExperienceEnhancementUI/",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:fix": "npm run lint -- --fix"
   },
   "private": true,
   "dependencies": {
