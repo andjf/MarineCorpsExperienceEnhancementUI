@@ -1,13 +1,16 @@
-import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
-import {faChevronUp} from '@fortawesome/free-solid-svg-icons/faChevronUp';
-import {faPaperPlane} from '@fortawesome/free-solid-svg-icons/faPaperPlane';
+import { CommonModule } from "@angular/common";
+import {
+    AfterViewChecked, Component, ElementRef, OnInit, ViewChild
+} from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 import {
     GoogleGenerativeAI, HarmBlockThreshold, HarmCategory
-} from '@google/generative-ai';
-import {environment} from "../../environments/environment.development";
+} from "@google/generative-ai";
+
+import { environment } from "../../environments/environment.development";
 
 const genAI = new GoogleGenerativeAI(environment.API_KEY);
 const generationConfig = {
@@ -23,30 +26,30 @@ const generationConfig = {
     maxOutputTokens: 100, // limit output
 };
 const model = genAI.getGenerativeModel({
-    model: 'gemini-pro',
+    model: "gemini-pro",
     ...generationConfig,
 });
 
 interface Message {
     content: string;
-    sender: 'chatbot' | 'user';
+    sender: "chatbot" | "user";
 }
 
 @Component({
-    selector: 'app-chatbot',
-    templateUrl: './chatbot.component.html',
+    selector: "app-chatbot",
+    templateUrl: "./chatbot.component.html",
     standalone: true,
     imports: [CommonModule, FormsModule, FontAwesomeModule],
-    styleUrls: ['./chatbot.component.css']
+    styleUrls: ["./chatbot.component.css"]
 })
 export class ChatbotComponent implements OnInit, AfterViewChecked {
-    @ViewChild('chatInput') chatInput!: ElementRef;
-    @ViewChild('chatbotContent') chatbotContent!: ElementRef;
+    @ViewChild("chatInput") chatInput!: ElementRef;
+    @ViewChild("chatbotContent") chatbotContent!: ElementRef;
     chevronUp = faChevronUp;
     paperPlane = faPaperPlane;
     showChatbot: boolean = false;
-    chatMessages: Message[] = [{content: 'Hello! How can I help you today?', sender: 'chatbot'}];
-    newMessage: string = '';
+    chatMessages: Message[] = [{ content: "Hello! How can I help you today?", sender: "chatbot" }];
+    newMessage: string = "";
 
     ngOnInit() {
         this.scrollToBottom();
@@ -61,14 +64,13 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     }
 
     sendMessage() {
-        if (this.newMessage.trim() !== '') {
-            this.chatMessages.push({content: this.newMessage, sender: 'user'});
+        if (this.newMessage.trim() !== "") {
+            this.chatMessages.push({ content: this.newMessage, sender: "user" });
             this.converse(this.newMessage);
-            this.newMessage = '';
-
+            this.newMessage = "";
         }
         const textarea = this.chatInput.nativeElement as HTMLTextAreaElement;
-        textarea.style.height = '25px';
+        textarea.style.height = "25px";
     }
 
     private scrollToBottom(): void {
@@ -80,20 +82,20 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
 
     adjustTextareaHeight(): void {
         const textarea = this.chatInput.nativeElement as HTMLTextAreaElement;
-        textarea.style.overflow = 'hidden';
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
+        textarea.style.overflow = "hidden";
+        textarea.style.height = "auto";
+        textarea.style.height = `${textarea.scrollHeight}px`;
     }
 
     async converse(chat: string) {
         //   prompt still needs fixing
-        const prompt = 'You are helping a user understand different data they are being shown,' +
-            ' and they may ask to see certain areas of the data. They may ask to see the data for a certain camp. if they do, agree, saying that you will show them the data for that camp.' +
-            'they may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information.'
-            + 'this is the chat from the user: ' + chat;
+        const prompt = "You are helping a user understand different data they are being shown,"
+            + " and they may ask to see certain areas of the data. They may ask to see the data for a certain camp. if they do, agree, saying that you will show them the data for that camp."
+            + "they may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information. They may ask for the data for a certain camp, if they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer, but if you are unable to, tell them that you are unable to provide that information."
+            + `this is the chat from the user: ${chat}`;
         const result = await model.generateContent(prompt);
-        const response = result.response;
-        this.chatMessages.push({content: response.text(), sender: 'chatbot'});
+        const { response } = result;
+        this.chatMessages.push({ content: response.text(), sender: "chatbot" });
         this.scrollToBottom();
     }
 }
