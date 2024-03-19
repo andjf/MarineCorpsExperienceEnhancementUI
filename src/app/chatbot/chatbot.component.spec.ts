@@ -20,4 +20,37 @@ describe("ChatbotComponent", () => {
     it("should create", () => {
         expect(component).toBeTruthy();
     });
+
+    it("should have show chat bot boolean", () => {
+        expect(component.showChatbot).toBeDefined();
+    });
+
+    it("should not show chat bot by default", () => {
+        expect(component.showChatbot).toBeFalse();
+    });
+
+    it("should show chat bot after toggled", () => {
+        component.toggleChatbot();
+        expect(component.showChatbot).toBeTrue();
+    });
+
+    it("should have chat messages", () => {
+        expect(component.chatMessages).toBeDefined();
+    });
+
+    it("should have chat messages populated", () => {
+        expect(component.chatMessages).toContain({
+            content: "Hello! How can I help you today?",
+            sender: "chatbot"
+        });
+    });
+
+    it("should have empty new message", () => {
+        expect(component.newMessage).toBeFalsy();
+    });
+
+    it("should have font awesome icons defined", () => {
+        expect(component.chevronUp).toBeDefined();
+        expect(component.paperPlane).toBeDefined();
+    });
 });
