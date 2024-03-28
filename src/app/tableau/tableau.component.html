@@ -12,12 +12,10 @@
             <fa-icon [icon]="faBars"></fa-icon>&nbsp;<label id="options-toggle-button-label">Options</label>
         </button>
         <div class="tableau-container">
-            <ngx-tableau [tableauVizUrl]="dashboardUrl"
-                         [options]="options"
-            />
+                     <tableau-viz id="Dashboard1" [src]="dashboardUrl"></tableau-viz>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
 <div *ngIf="apiKey">
-    <app-chatbot [apiKey]="apiKey"></app-chatbot>
+    <app-chatbot [apiKey]="apiKey" (newDashboardUrl)="updateDashboardUrl($event)"></app-chatbot>
 </div>

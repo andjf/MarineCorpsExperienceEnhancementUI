@@ -1,5 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import {
+    ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA,
+    Input, NgZone, OnInit
+} from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import {
     MatDrawer,
@@ -30,10 +33,11 @@ import { ChatbotComponent } from "../chatbot/chatbot.component";
         FaIconComponent,
         MatSidenavContainer,
         MatSidenav,
-        MatSidenavContent
+        MatSidenavContent,
     ],
     templateUrl: "./tableau.component.html",
     styleUrl: "./tableau.component.css",
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 
 export class TableauComponent implements OnInit {
@@ -43,10 +47,17 @@ export class TableauComponent implements OnInit {
     // Using the example URL that Andrew has provided for now. Likely will use Tableau Public for final worksheet once
     // Mohit has completed his analyses.
     viz: string = "Whereintheworldisfreedomofpress/Final_Paper";
+    // Inherit attributes from the parent component
+    @Input() dashboardIndex = 0;
+    @Input() toolbar = "hidden";
+    @Input() vizUrl = "";
 
+    // Dashboard properties
+    public VizIndex = `Tableau-Viz-${this.dashboardIndex}`;
     apiKey: string | null = null;
-
-    constructor(private route: ActivatedRoute) {}
+    // eslint-disable-next-line max-len
+    dashUrl: string = "https://public.tableau.com/views/Whereintheworldisfreedomofpress/Final_Paper?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link;";
+    constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
     ngOnInit(): void {
         this.route.queryParams
@@ -62,10 +73,14 @@ export class TableauComponent implements OnInit {
         device: "desktop",
         toolbarPosition: ToolbarPosition.TOP
     };
-
-    get dashboardUrl(): string {
+    get constructUrl(): string {
         return [this.host, this.path, this.viz].join("/");
     }
-
+    get dashboardUrl(): string {
+        return this.dashUrl;
+    }
+    updateDashboardUrl(newUrl: string) {
+        this.dashUrl = newUrl;
+    }
     protected readonly faBars = faBars;
 }
