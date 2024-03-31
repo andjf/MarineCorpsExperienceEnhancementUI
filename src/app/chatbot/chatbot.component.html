@@ -1,6 +1,6 @@
 <div class="chatbot-container" [ngClass]="{ 'chatbot-open': showChatbot }">
-    <div class="chatbot-header">
-        <button class="toggle-button" (click)="toggleChatbot()">
+    <div class="chatbot-header" (click)="toggleChatbot()">
+        <button class="toggle-button">
             <fa-icon [icon]="chevronUp"></fa-icon>
         </button>
         <h2>Chatbot</h2>
