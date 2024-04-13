@@ -5,8 +5,25 @@
     right: 0;
     width: 350px;
     height: 440px;
-    background-color: var(--secondary-color);
-    border: 2px solid #ccc;
+    background-color: var(--secondary-color-dark);
+    border: 2px solid #888;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    transform: translateY(100%);
+    z-index: 100;
+}
+
+.chatbot-container.lightMode{
+    font-family: Crimson Text, serif;
+    position: fixed;
+    bottom: 40px;
+    right: 0;
+    width: 350px;
+    height: 440px;
+    background-color: var(--secondary-color-dark);
+    border: 2px solid var(--secondary-color-light);
     border-radius: 5px 5px 0 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -23,7 +40,20 @@
     align-items: center;
     color: white;
     font-size: 14px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color-dark);
+    border-bottom: 2px solid var(--primary-color-dark);
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    cursor: pointer;
+}
+
+.chatbot-header.lightMode {
+    align-items: center;
+    color: var(--secondary-color-light);
+    font-size: 14px;
+    background-color: var(--primary-color-light-chatHeader);
+    border-bottom: 2px solid var(--secondary-color-light);
     display: flex;
     flex-direction: row;
     height: 40px;
@@ -32,7 +62,17 @@
 
 .toggle-button {
     background: none;
-    color: white;
+    color: var(--secondary-color-dark);
+    border: none;
+    font-size: 20px;
+    padding-right: 8px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.toggle-button.lightMode {
+    background: none;
+    color: var(--secondary-color-light);
     border: none;
     font-size: 20px;
     padding-right: 8px;
@@ -53,8 +93,8 @@
 
 #chat-input {
     width: 80%;
-    border-color: var(--primary-color);
-    background-color: var(--secondary-color);
+    border-color: var(--primary-color-dark);
+    background-color: var(--secondary-color-dark);
     padding: 2px 5px 2px 5px;
     margin-right: 8px;
     border-radius: 8px;
@@ -67,7 +107,7 @@
 
 #send-button {
     background: none;
-    color: var(--primary-color);
+    color: var(--primary-color-dark);
     border: none;
     font-size: 20px;
 }
@@ -90,9 +130,19 @@
 
 .user-message {
     margin: 8px 5px 5px 8px;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color-dark);
     padding: 10px;
     color: white;
+    border-radius: 10px 10px 0 10px;
+    float: right;
+    clear: both;
+}
+
+.user-message.lightMode {
+    margin: 8px 5px 5px 8px;
+    background-color: var(--primary-color-light);
+    padding: 10px;
+    color: var(--secondary-color-light);
     border-radius: 10px 10px 0 10px;
     float: right;
     clear: both;

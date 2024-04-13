@@ -4,7 +4,12 @@
 }
 
 #sidebar-container {
-    background-color: #0E2940;
+    background-color: var(--primary-color-dark);
+    z-index: 0;
+}
+
+#sidebar-container.lightMode {
+    background-color: var(--primary-color-light);
     z-index: 0;
 }
 
@@ -28,7 +33,13 @@ mat-sidenav-container {
 }
 
 #options-toggle-button {
-    color: var(--secondary-color);
+    color: var(--secondary-color-dark);
+    margin-left: 4em;
+    cursor: pointer;
+}
+
+#options-toggle-button.lightMode {
+    color: var(--secondary-color-light);
     margin-left: 4em;
     cursor: pointer;
 }

@@ -59,6 +59,29 @@ export class TableauComponent implements OnInit {
     dashUrl: string = "https://public.tableau.com/shared/KSHKD97P2?:display_count=n&:origin=viz_share_link"
     constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
+    toggleDarkModeClasses():void{
+        console.log("toggling dark mode");
+        document.body.classList.toggle("lightMode");
+        let cbs = document.getElementsByClassName("chatbot-header");
+        for(let i = 0; i < cbs.length; i++){
+            cbs[i].classList.toggle("lightMode");
+        }
+        document.getElementById("sidebar-container")?.classList.toggle("lightMode");
+        document.getElementById("options-toggle-button")?.classList.toggle("lightMode");
+        let h1s = document.getElementsByTagName("h1");
+        for (let i = 0; i < h1s.length; i++){
+            h1s[i].classList.toggle("lightMode");
+        }
+        let tbs = document.getElementsByClassName("toggle-button");
+        for(let i = 0; i < tbs.length; i++){
+            tbs[i].classList.toggle("lightMode");
+        }
+        let htmls = document.getElementsByTagName("html");
+        for(let i = 0; i < htmls.length; i++){
+            htmls[i].classList.toggle("lightMode");
+        }
+    }
+
     ngOnInit(): void {
         this.route.queryParams
             .subscribe((params) => {
