@@ -1,5 +1,6 @@
 .tableau-container {
-margin-left: 4em;
+    margin-left: 4em;
+    max-width: 90%;
 }
 
 #sidebar-container {
