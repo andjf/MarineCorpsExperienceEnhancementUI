@@ -42,7 +42,7 @@ interface Message {
 }
 
 const DEFAULT_ERROR_MESSAGE: Message = {
-    content: "Error connecting to model. Please ensure your API key is correct",
+    content: "Sorry, I am having an issue with that question, try another.",
     sender: "chatbot"
 };
 
@@ -61,7 +61,7 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     showChatbot: boolean = false;
     constructor(private http: HttpClient) { }
     // eslint-disable-next-line max-len
-    chatMessages: Message[] = [{ content: "Hello! How can I help you today? To see a dashboard for a command, just ask me.", sender: "chatbot" }];
+    chatMessages: Message[] = [{ content: "Hello! You can ask me general questions about the data and dashboards.", sender: "chatbot" }, { content: "To ask data questions, start your chat 'data:', ex. 'data: which 5 commands have the most shrink?'", sender: "chatbot" }, { content: "To see specific command dashboards, start your chat with 'dash:', ex. 'dash: show me the dashboard for Camp Lejeune'", sender: "chatbot" }];
     newMessage: string = "";
     commands: { [key: string]: string } = {
         "camp pendleton": "PNM",
@@ -126,14 +126,24 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     }
     async converse(chat: string): Promise<Message> {
         if (!this.model) return DEFAULT_ERROR_MESSAGE;
-        // eslint-disable-next-line max-len
-        let prompt = "You are helping a user understand different dashboards showing data from different marine base camps. Analyze their chat to see if they are asking to see a dashboard specific camp, they must include 'dashboard' in their chat. If they are asking to see specific data about a camp or asking about your capabilities respond 'N/A'. The name of the specific camp may be a three letter code or a name of a location. If they are explicitly asking to see the dashboard for a base, respond only with the word 'LOOKUP' followed by the name of the camp they requested to see. If they want to see a dashboard, they will have included 'dashboard' in their request. If they have not requested a dashboard, respond N/A";
-        let result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
-        if (result.response.text().includes("LOOKUP")) {
-            const camp = result.response.text().split("LOOKUP")[1].trim().toUpperCase();
+        const requestType = chat.split(" ")[0];
+
+        if (requestType === "data:") {
+            const response = await this.sendQuery(chat.substring(5));
+            // eslint-disable-next-line max-len
+            const prompt = "You are given a stringified JSON object that contains the data the user requested. The input may be too large, if it is over 200 characters truncate the data in a way that makes sense. The data is in the form of a JSON object. The data may contain information about a specific base camp or general information. Translate the data into a human-readable format, which means removing commas and adding spaces as well as adding introductory text, without losing the integrity of the data. Your output will be used directly as a string and not markdown. If you had to truncate the data, show your truncated response but tell the user that the response had to be truncated and to be more specific in their questions";
+            const result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${response}`);
+            return { content: result.response.text(), sender: "chatbot" };
+        }
+        if (requestType === "dash:") {
+            // eslint-disable-next-line max-len
+            const prompt = "You are helping a user find the dashboard they are looking for. They have provided you a chat that may contain a location or a three letter code for a marine base camp. Analyze their chat to see if they are asking to see a dashboard specific camp, they must include 'dashboard' in their chat. If they are asking to see specific data about a camp or asking about your capabilities respond 'N/A'. The name of the specific camp may be a three letter code or a name of a location. If they do, respond only with the location or the three letter code. If you cannot determine location or code, respond N/A";
+            // eslint-disable-next-line max-len
+            const result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat.substring(5)}`);
+            const camp = result.response.text().toUpperCase();
             // not a command code input
             if (camp.length !== 3) {
-                const campName = result.response.text().substring(7).trim().toLowerCase();
+                const campName = result.response.text().trim().toLowerCase();
                 if (this.urls.hasOwnProperty.call(this.commands, campName)) {
                     this.sendNewUrl(this.urls[this.commands[campName]]);
                     return { content: `Of course, here is the dashboard for base ${campName}`, sender: "chatbot" };
@@ -151,18 +161,8 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
             return { content: `Sorry, I couldn't find a dashboard for base ${camp}, available bases are: ${Object.keys(this.urls)}`, sender: "chatbot" };
         }
         // eslint-disable-next-line max-len
-        prompt = "You are helping a user understand data from different marine base camps. Analyze their chat to see if they are asking to see specific data, they may be asking what you can help them with or other general information about the web app, if this is the case respond with N/A. If they are explicitly asking to see specific data, respond only with the word 'LOOKUP'";
-        result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
-        if (result.response.text().includes("LOOKUP")) {
-            const response = await this.sendQuery(chat);
-            // eslint-disable-next-line max-len
-            prompt = "You are given a stringified JSON object that contains the data the user requested. The data is in the form of a JSON object. The data may contain information about a specific base camp or general information. Translate the data into a human-readable format, which means removing commas and adding spaces as well as adding introductory text, without losing the integrity of the data. Your output will be used directly as a string and not markdown. If you are not given a JSON object,";
-            result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${response}`);
-            return { content: `Sure, here is the data: ${result.response.text()}`, sender: "chatbot" };
-        }
-        // eslint-disable-next-line max-len
-        prompt = "You are helping a user understand different data they are being shown. You can help users see specific dashboards for different commands and see specific data like answers to questions like 'What command causes the most shrink'. They may ask for general information, do your best to answer. If you are unable to, tell them that you are unable to help with that, then list what you can help with.";
-        result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
+        const prompt = "You are a chatbot helping a user understand the system. The user has asked you a question and you need to provide a response based off the following information: To ask a data question they must start their chat with 'data:', to change dashboards they must start their chat with 'dash:'. The objective of this site is to display shrink, which is a loss of inventory due to theft, damage, shipping errors, and more. The user can ask questions like 'what bases have the most shrink?' 'what causes the most shrink for CLM?'";
+        const result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
         return { content: result.response.text(), sender: "chatbot" };
     }
     sendQuery(message: string): Promise<string> {
