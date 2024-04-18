@@ -73,14 +73,18 @@ export class TableauComponent implements OnInit {
         device: "desktop",
         toolbarPosition: ToolbarPosition.TOP
     };
+
     get constructUrl(): string {
         return [this.host, this.path, this.viz].join("/");
     }
+
     get dashboardUrl(): string {
         return this.dashUrl;
     }
+
     updateDashboardUrl(newUrl: string) {
         this.dashUrl = newUrl;
     }
+
     protected readonly faBars = faBars;
 }

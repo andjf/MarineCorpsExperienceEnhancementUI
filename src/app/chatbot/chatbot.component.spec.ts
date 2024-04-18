@@ -46,7 +46,7 @@ describe("ChatbotComponent", () => {
     });
 
     it("should have empty new message", () => {
-        expect(component.newMessage).toBeFalsy();
+        expect(component.currentMessage).toBeFalsy();
     });
 
     it("should have font awesome icons defined", () => {

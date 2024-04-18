@@ -1,6 +1,6 @@
 <div class="chatbot-container" [ngClass]="{ 'chatbot-open': showChatbot }">
-    <div class="chatbot-header">
-        <button class="toggle-button" (click)="toggleChatbot()">
+    <div class="chatbot-header" (click)="toggleChatbot()">
+        <button class="toggle-button" [ngClass]="{ 'chevron-flip': showChatbot }">
             <fa-icon [icon]="chevronUp"></fa-icon>
         </button>
         <h2>Chatbot</h2>
@@ -9,10 +9,7 @@
         <div
             *ngFor="let message of chatMessages"
             class="message"
-            [ngClass]="{
-                'chatbot-message': message.sender === 'chatbot',
-                'user-message': message.sender === 'user'
-            }"
+            [ngClass]="[ message.sender ]"
         >
             {{ message.content }}
         </div>
@@ -21,8 +18,9 @@
         <textarea #chatInput
             id="chat-input"
             rows="1"
-            [(ngModel)]="newMessage"
+            [(ngModel)]="currentMessage"
             (input)="adjustTextareaHeight()"
+            (keyup.arrowup)="previousMessage()"
             (keyup.enter)="sendMessage()"
             placeholder="Type your message..."
         >
