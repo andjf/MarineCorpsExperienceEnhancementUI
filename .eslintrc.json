@@ -32,6 +32,13 @@
                     "error",
                     120
                 ],
+                "lines-between-class-members": [
+                    "error",
+                    "always",
+                    {
+                        "exceptAfterSingleLine": true
+                    }
+                ],
                 "simple-import-sort/imports": "error",
                 "simple-import-sort/exports": "error",
                 // eslint-plugin-unused-imports rules
