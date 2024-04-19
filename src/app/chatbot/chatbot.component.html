@@ -1,7 +1,7 @@
 <div class="chatbot-container" [ngClass]="{ 'chatbot-open': showChatbot }">
     <div class="chatbot-header" (click)="toggleChatbot()">
         <button class="toggle-button" [ngClass]="{ 'chevron-flip': showChatbot }">
-            <fa-icon [icon]="chevronUp"></fa-icon>
+            <mat-icon>expand_less</mat-icon>
         </button>
         <h2>Chatbot</h2>
     </div>
@@ -26,7 +26,7 @@
         >
         </textarea>
         <button id="send-button" (click)="sendMessage()">
-            <fa-icon [icon]="paperPlane"></fa-icon>
+            <mat-icon>send</mat-icon>
         </button>
     </div>
 </div>

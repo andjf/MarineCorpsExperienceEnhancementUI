@@ -1,15 +1,14 @@
 <mat-sidenav-container id="sidebar-container" fullscreen>
     <mat-sidenav #drawer mode="over" [fixedInViewport]="true" id="sidebar-drawer">
         <h2>Options</h2>
-
         <label>Dark Mode:</label>
         <br>
         <label>To be implemented later....</label>
     </mat-sidenav>
     <mat-sidenav-content>
         <h1>Marine Corps Customer Experience Enhancement</h1>
-        <button type="button" mat-button (click)="drawer.toggle()" id="options-toggle-button">
-            <fa-icon [icon]="faBars"></fa-icon>&nbsp;<label id="options-toggle-button-label">Options</label>
+        <button mat-button (click)="drawer.toggle()" id="options-toggle-button">
+            <mat-icon>menu</mat-icon> Options
         </button>
         <div class="tableau-container">
             <tableau-viz [src]="dashboardUrl"></tableau-viz>

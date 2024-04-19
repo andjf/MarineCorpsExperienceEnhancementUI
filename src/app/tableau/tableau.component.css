@@ -24,18 +24,9 @@ mat-sidenav-container {
 #sidebar-drawer {
     width: 20%;
     text-align: center;
-    height: 100%;
 }
 
 #options-toggle-button {
     color: var(--secondary-color);
     margin-left: 4em;
-    cursor: pointer;
 }
-
-#options-toggle-button-label {
-    cursor: pointer;
-}
-/*.content{*/
-/*    max-width: 90%;*/
-/*}*/

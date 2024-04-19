@@ -10,8 +10,7 @@ import {
     ViewChild
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faChevronUp, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { MatIconModule } from "@angular/material/icon";
 
 import { ChatbotService } from "../chatbot.service";
 import { CommandCode, commandCodeToLink } from "../model/command-code";
@@ -25,7 +24,7 @@ interface Message {
     selector: "app-chatbot",
     templateUrl: "./chatbot.component.html",
     standalone: true,
-    imports: [CommonModule, FormsModule, FontAwesomeModule, HttpClientModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, MatIconModule],
     styleUrls: ["./chatbot.component.css"]
 })
 export class ChatbotComponent implements AfterViewChecked {
@@ -54,9 +53,6 @@ export class ChatbotComponent implements AfterViewChecked {
     ];
 
     currentMessage: string = "";
-
-    chevronUp = faChevronUp;
-    paperPlane = faPaperPlane;
 
     ngAfterViewChecked() {
         this.scrollToBottom();

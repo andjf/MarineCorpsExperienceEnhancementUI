@@ -1,9 +1,14 @@
 import { CommonModule } from "@angular/common";
 import {
-    ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA,
-    Input, NgZone, OnInit
+    ChangeDetectorRef,
+    Component,
+    CUSTOM_ELEMENTS_SCHEMA,
+    Input,
+    NgZone,
+    OnInit
 } from "@angular/core";
 import { MatButton } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 import {
     MatDrawer,
     MatDrawerContainer,
@@ -13,8 +18,6 @@ import {
     MatSidenavContent
 } from "@angular/material/sidenav";
 import { ActivatedRoute } from "@angular/router";
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { TableauModule, ToolbarPosition, VizCreateOptions } from "ngx-tableau";
 
 import { ChatbotComponent } from "../chatbot/chatbot.component";
@@ -30,10 +33,10 @@ import { ChatbotComponent } from "../chatbot/chatbot.component";
         MatDrawer,
         MatButton,
         MatDrawerContent,
-        FaIconComponent,
         MatSidenavContainer,
         MatSidenav,
         MatSidenavContent,
+        MatIconModule,
     ],
     templateUrl: "./tableau.component.html",
     styleUrl: "./tableau.component.css",
@@ -85,6 +88,4 @@ export class TableauComponent implements OnInit {
     updateDashboardUrl(newUrl: string) {
         this.dashUrl = newUrl;
     }
-
-    protected readonly faBars = faBars;
 }
