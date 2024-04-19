@@ -4,8 +4,7 @@ import { firstValueFrom } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class ChatbotService {
-    // private readonly apiUrl = "https://mccsapi-fithlnac6q-uk.a.run.app";
-    private readonly apiUrl = "http://localhost:8080";
+    private readonly apiUrl = "https://mccsapi-fithlnac6q-uk.a.run.app";
 
     constructor(private http: HttpClient) { }
 
