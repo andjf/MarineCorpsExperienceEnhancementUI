@@ -11,9 +11,8 @@ import {
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
-
-import { ChatbotService } from "../chatbot.service";
-import { CommandCode, commandCodeToLink } from "../model/command-code";
+import { CommandCode, commandCodeToLink } from "@models";
+import { ChatbotService } from "@services";
 
 interface Message {
     content: string;
