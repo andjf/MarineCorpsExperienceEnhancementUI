@@ -56,7 +56,7 @@ export class TableauComponent implements OnInit {
     public VizIndex = `Tableau-Viz-${this.dashboardIndex}`;
     apiKey: string | null = null;
     // eslint-disable-next-line max-len
-    dashUrl: string = "https://public.tableau.com/shared/KSHKD97P2?:display_count=n&:origin=viz_share_link"
+    dashUrl: string = "https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link"
     constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
     toggleDarkModeClasses():void{

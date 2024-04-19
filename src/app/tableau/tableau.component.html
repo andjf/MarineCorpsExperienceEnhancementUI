@@ -2,9 +2,39 @@
     <mat-sidenav #drawer mode="over" [fixedInViewport]="true" id="sidebar-drawer">
         <h2>Options</h2>
 
-        <label>Dark Mode Toggle:</label>
+        <h3>
+            Dark Mode Toggle
+        </h3>
         <br>
         <button (click)="toggleDarkModeClasses()">Click to Toggle</button>
+        <br>
+
+        <h3>
+            Quick Swap Dashboards
+        </h3>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Main Panel
+        </button>
+        <br>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyState/ShrinkValuebyState?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Map View
+        </button>
+        <br>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyCommand/ShrinkbyCommand?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Command View
+        </button>
+        <br>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyProd/ShrinkValuebyProdDivisionLobDesc?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Product Division
+        </button>
+        <br>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbySiteID/ShrinkValueSiteIDPeriod?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Site ID and Period
+        </button>
+        <br>
+        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkQuanitybyInventoryRemoval/ShrinkQtybyInv_Removal?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
+            Inventory Removal
+        </button>
     </mat-sidenav>
     <mat-sidenav-content>
         <h1>Marine Corps Customer Experience Enhancement</h1>
@@ -12,7 +42,7 @@
             <fa-icon [icon]="faBars"></fa-icon>&nbsp;<label id="options-toggle-button-label">Options</label>
         </button>
         <div class="tableau-container">
-                     <tableau-viz id="Dashboard1" [src]="dashboardUrl"></tableau-viz>
+            <tableau-viz id="Dashboard1" [src]="dashboardUrl"></tableau-viz>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
