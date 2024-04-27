@@ -1,10 +1,15 @@
 .tableau-container {
-margin-left: 4em;
-max-width: 90%;
+    margin-left: 4em;
+    max-width: 90%;
 }
 
 #sidebar-container {
-    background-color: #0E2940;
+    background-color: var(--primary-color-dark);
+    z-index: 0;
+}
+
+#sidebar-container.lightMode {
+    background-color: var(--primary-color-light);
     z-index: 0;
 }
 
@@ -22,11 +27,35 @@ mat-sidenav-container {
 }
 
 #sidebar-drawer {
-    width: 20%;
+    width: 25%;
     text-align: center;
 }
 
 #options-toggle-button {
-    color: var(--secondary-color);
+    color: var(--secondary-color-dark);
     margin-left: 4em;
+    cursor: pointer;
+}
+
+#options-toggle-button.lightMode {
+    color: var(--secondary-color-light);
+    margin-left: 4em;
+}
+
+#options-toggle-button-label {
+    cursor: pointer;
+}
+
+mat-sidenav button{
+    background-color: purple;
+    color: var(--secondary-color-dark);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 140px;
+}
+
+mat-sidenav button:hover{
+    background-color: navy;
+    cursor: pointer;
 }

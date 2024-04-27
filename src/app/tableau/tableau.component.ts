@@ -28,6 +28,28 @@ const DEFAULT_DASHBOARD = "https://public.tableau.com/views/MCCSInventoryDataVis
 export class TableauComponent {
     dashboardUrl: string = DEFAULT_DASHBOARD;
 
+    toggleDarkModeClasses(): void {
+        document.body.classList.toggle("lightMode");
+        const cbs = document.getElementsByClassName("chatbot-header");
+        for (let i = 0; i < cbs.length; i += 1) {
+            cbs[i].classList.toggle("lightMode");
+        }
+        document.getElementById("sidebar-container")?.classList.toggle("lightMode");
+        document.getElementById("options-toggle-button")?.classList.toggle("lightMode");
+        const h1s = document.getElementsByTagName("h1");
+        for (let i = 0; i < h1s.length; i += 1) {
+            h1s[i].classList.toggle("lightMode");
+        }
+        const tbs = document.getElementsByClassName("toggle-button");
+        for (let i = 0; i < tbs.length; i += 1) {
+            tbs[i].classList.toggle("lightMode");
+        }
+        const htmls = document.getElementsByTagName("html");
+        for (let i = 0; i < htmls.length; i += 1) {
+            htmls[i].classList.toggle("lightMode");
+        }
+    }
+
     updateDashboardUrl(newUrl: string) {
         this.dashboardUrl = newUrl;
     }
