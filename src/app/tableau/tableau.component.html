@@ -1,114 +1,50 @@
-<mat-sidenav-container id="sidebar-container" fullscreen>
+<mat-sidenav-container id="sidebar-container" fullscreen [ngClass]="[theme]">
     <mat-sidenav #drawer mode="over" [fixedInViewport]="true" id="sidebar-drawer">
         <h2>Options</h2>
+        <h3>Dark Mode Toggle</h3>
+        <button mat-raised-button (click)="toggleMode()">Click to Toggle</button>
 
-        <h3>
-            Dark Mode Toggle
-        </h3>
-        <br>
-        <button (click)="toggleDarkModeClasses()">Click to Toggle</button>
+        <h3>Quick Swap Dashboards (General)</h3>
+        <div class="quick-swap-buttons-container">
+            <button
+                mat-raised-button
+                color="primary"
+                *ngFor="let general of generalQuickSwaps"
+                (click)="updateDashboardUrl(general.url)"
+            >
+                {{ general.label }}
+            </button>
+        </div>
+
         <br>
 
-        <h3>
-            Quick Swap Dashboards (General)
-        </h3>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Main Panel
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyState/ShrinkValuebyState?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Map View
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyCommand/ShrinkbyCommand?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command View
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbyProd/ShrinkValuebyProdDivisionLobDesc?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Product Division
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkbySiteID/ShrinkValueSiteIDPeriod?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Site ID and Period
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/ShrinkQuanitybyInventoryRemoval/ShrinkQtybyInv_Removal?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Inventory Removal
-        </button>
-        <br>
-        <h3>
-            Quick Swap Dashboards (Commands)
-        </h3>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandALM/CommandALM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command ALM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandCLM/CommandCLM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command CLM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandCPM/CommandCPM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command CPM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandELM/CommandELM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command ELM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandHHM/CommandHHM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command HHM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandIWM/CommandIWM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command IWM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandKBM/CommandKBM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command KBM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandMRM/CommandMRM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command MRM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandPNM/CommandPNM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command PNM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandQUM/CommandQUM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command QUM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandRDCE/CommandRDCE?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command RDCE
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandRDCW/CommandRDCW?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command RDCW
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandSCM/CommandSCM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command SCM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandSDM/CommandSDM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command SDM
-        </button>
-        <br>
-        <button (click)="updateDashboardUrl('https://public.tableau.com/views/CommandTWM/CommandTWM?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link')">
-            Command TWM
-        </button>
+        <h3>Quick Swap Dashboards (Commands)</h3>
+        <div class="quick-swap-buttons-container">
+            <button
+                mat-raised-button
+                color="primary"
+                *ngFor="let command of allCommands"
+                (click)="updateDashboardToCommand(command)"
+            >
+                {{ command }}
+            </button>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <h1>Marine Corps Customer Experience Enhancement</h1>
-        <button type="button" mat-button (click)="drawer.toggle()" id="options-toggle-button">
-            <fa-icon [icon]="faBars"></fa-icon>&nbsp;<label id="options-toggle-button-label">Options</label>
-        </button>
+        <h1 class="title" [ngClass]="[theme]">
+            <button mat-icon-button (click)="drawer.toggle()" id="sidebar-toggle-button">
+                <mat-icon>menu</mat-icon>
+            </button>
+            MCCS Dashboard App
+            <button mat-icon-button (click)="home()">
+                <mat-icon>home</mat-icon>
+            </button>
+        </h1>
         <div class="tableau-container">
-            <tableau-viz id="Dashboard1" [src]="dashboardUrl"></tableau-viz>
+            <tableau-viz [src]="dashboardUrl"></tableau-viz>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
-<div *ngIf="apiKey">
-    <app-chatbot [apiKey]="apiKey" (newDashboardUrl)="updateDashboardUrl($event)"></app-chatbot>
+<div>
+    <app-chatbot (newDashboardUrl)="updateDashboardUrl($event)"></app-chatbot>
 </div>

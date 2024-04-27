@@ -15,23 +15,6 @@
     z-index: 100;
 }
 
-.chatbot-container.lightMode{
-    font-family: Crimson Text, serif;
-    position: fixed;
-    bottom: 40px;
-    right: 0;
-    width: 350px;
-    height: 440px;
-    background-color: var(--secondary-color-dark);
-    border: 2px solid var(--secondary-color-light);
-    border-radius: 5px 5px 0 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    transform: translateY(100%);
-    z-index: 100;
-}
-
 .chatbot-open {
     transform: translateY(10%);
 }
@@ -48,7 +31,7 @@
     cursor: pointer;
 }
 
-.chatbot-header.lightMode {
+.chatbot-header.light {
     align-items: center;
     color: var(--secondary-color-light);
     font-size: 14px;
@@ -68,9 +51,11 @@
     padding-right: 8px;
     padding-left: 10px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+    transform: rotate(0deg);
 }
 
-.toggle-button.lightMode {
+.toggle-button.light {
     background: none;
     color: var(--secondary-color-light);
     border: none;
@@ -93,12 +78,13 @@
 
 #chat-input {
     width: 80%;
+    font-family: 'Ubuntu Mono', monospace;
     border-color: var(--primary-color-dark);
     background-color: var(--secondary-color-dark);
     padding: 2px 5px 2px 5px;
     margin-right: 8px;
     border-radius: 8px;
-    height: 25px;
+    height: 2em;
     max-height: 100px;
     overflow-y: hidden;
     font-size: 18px;
@@ -112,44 +98,36 @@
     font-size: 20px;
 }
 
-.chatbot-message .user-message {
+.message {
     font-size: 16px;
-    font-family: var;
-
-}
-
-.chatbot-message {
-    background-color: white;
-    color: black;
+    font-family: 'Ubuntu Mono', monospace;
     padding: 10px;
-    margin: 8px 5px 5px 5px;
-    border-radius: 10px 10px 10px 0;
-    float: left;
     clear: both;
 }
 
-.user-message {
+.message.chatbot {
+    color: black;
+    background-color: white;
+    margin: 8px 5px 5px 5px;
+    border-radius: 10px 10px 10px 0;
+    float: left;
+}
+
+.message.user {
     margin: 8px 5px 5px 8px;
     background-color: var(--primary-color-dark);
     padding: 10px;
     color: white;
-    border-radius: 10px 10px 0 10px;
-    float: right;
-    clear: both;
-}
-
-.user-message.lightMode {
     margin: 8px 5px 5px 8px;
-    background-color: var(--primary-color-light);
-    padding: 10px;
-    color: var(--secondary-color-light);
     border-radius: 10px 10px 0 10px;
     float: right;
-    clear: both;
 }
 
 .chatbot-content {
     max-height: 345px;
     overflow-y: auto;
 }
-  
+
+.chevron-flip {
+    transform: rotate(180deg);
+}

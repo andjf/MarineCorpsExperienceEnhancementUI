@@ -46,11 +46,6 @@ describe("ChatbotComponent", () => {
     });
 
     it("should have empty new message", () => {
-        expect(component.newMessage).toBeFalsy();
-    });
-
-    it("should have font awesome icons defined", () => {
-        expect(component.chevronUp).toBeDefined();
-        expect(component.paperPlane).toBeDefined();
+        expect(component.currentMessage).toBeFalsy();
     });
 });

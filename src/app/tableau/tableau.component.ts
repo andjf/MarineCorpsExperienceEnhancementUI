@@ -1,23 +1,16 @@
 import { CommonModule } from "@angular/common";
-import {
-    ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA,
-    Input, NgZone, OnInit
-} from "@angular/core";
-import { MatButton } from "@angular/material/button";
-import {
-    MatDrawer,
-    MatDrawerContainer,
-    MatDrawerContent,
-    MatSidenav,
-    MatSidenavContainer,
-    MatSidenavContent
-} from "@angular/material/sidenav";
-import { ActivatedRoute } from "@angular/router";
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { TableauModule, ToolbarPosition, VizCreateOptions } from "ngx-tableau";
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { CommandCode, commandCodeToLink } from "@models";
+import { ThemeService } from "app/theme.service";
+import { TableauModule } from "ngx-tableau";
 
 import { ChatbotComponent } from "../chatbot/chatbot.component";
+
+// eslint-disable-next-line max-len
+const DEFAULT_DASHBOARD = "https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link";
 
 @Component({
     selector: "app-tableau",
@@ -26,84 +19,74 @@ import { ChatbotComponent } from "../chatbot/chatbot.component";
         TableauModule,
         ChatbotComponent,
         CommonModule,
-        MatDrawerContainer,
-        MatDrawer,
-        MatButton,
-        MatDrawerContent,
-        FaIconComponent,
-        MatSidenavContainer,
-        MatSidenav,
-        MatSidenavContent,
+        MatButtonModule,
+        MatSidenavModule,
+        MatIconModule,
     ],
     templateUrl: "./tableau.component.html",
     styleUrl: "./tableau.component.css",
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
+export class TableauComponent {
+    dashboardUrl: string = DEFAULT_DASHBOARD;
 
-export class TableauComponent implements OnInit {
-    host: string = "https://public.tableau.com";
-    path: string = "views";
-    // viz: string = 'AroundtheAntarctic/MapClean';
-    // Using the example URL that Andrew has provided for now. Likely will use Tableau Public for final worksheet once
-    // Mohit has completed his analyses.
-    viz: string = "Whereintheworldisfreedomofpress/Final_Paper";
-    // Inherit attributes from the parent component
-    @Input() dashboardIndex = 0;
-    @Input() toolbar = "hidden";
-    @Input() vizUrl = "";
+    constructor(private themeService: ThemeService) {}
 
-    // Dashboard properties
-    public VizIndex = `Tableau-Viz-${this.dashboardIndex}`;
-    apiKey: string | null = null;
-    // eslint-disable-next-line max-len
-    dashUrl: string = "https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link"
-    constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
-
-    toggleDarkModeClasses():void{
-        console.log("toggling dark mode");
-        document.body.classList.toggle("lightMode");
-        let cbs = document.getElementsByClassName("chatbot-header");
-        for(let i = 0; i < cbs.length; i++){
-            cbs[i].classList.toggle("lightMode");
-        }
-        document.getElementById("sidebar-container")?.classList.toggle("lightMode");
-        document.getElementById("options-toggle-button")?.classList.toggle("lightMode");
-        let h1s = document.getElementsByTagName("h1");
-        for (let i = 0; i < h1s.length; i++){
-            h1s[i].classList.toggle("lightMode");
-        }
-        let tbs = document.getElementsByClassName("toggle-button");
-        for(let i = 0; i < tbs.length; i++){
-            tbs[i].classList.toggle("lightMode");
-        }
-        let htmls = document.getElementsByTagName("html");
-        for(let i = 0; i < htmls.length; i++){
-            htmls[i].classList.toggle("lightMode");
-        }
+    get theme(): string {
+        return this.themeService.currentTheme;
     }
 
-    ngOnInit(): void {
-        this.route.queryParams
-            .subscribe((params) => {
-                const apiKey = params["apiKey"] || null;
-                if (apiKey) this.apiKey = apiKey;
-            });
+    // eslint-disable-next-line class-methods-use-this
+    get allCommands(): string[] {
+        return Object.keys(CommandCode);
     }
 
-    // The options tab here allows for easy launch options for us to be able to use.
-    // Tons of useful tips can be found here: https://github.com/nfqsolutions/ngx-tableau?tab=readme-ov-file
-    options: VizCreateOptions = {
-        device: "desktop",
-        toolbarPosition: ToolbarPosition.TOP
-    };
-    get constructUrl(): string {
-        return [this.host, this.path, this.viz].join("/");
+    // eslint-disable-next-line class-methods-use-this
+    get generalQuickSwaps() {
+        /* eslint-disable max-len */
+        return [
+            {
+                label: "Main Panel",
+                url: "https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+            {
+                label: "Map View",
+                url: "https://public.tableau.com/views/ShrinkbyState/ShrinkValuebyState?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+            {
+                label: "Command View",
+                url: "https://public.tableau.com/views/ShrinkbyCommand/ShrinkbyCommand?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+            {
+                label: "Product Division",
+                url: "https://public.tableau.com/views/ShrinkbyProd/ShrinkValuebyProdDivisionLobDesc?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+            {
+                label: "Site ID and Period",
+                url: "https://public.tableau.com/views/ShrinkbySiteID/ShrinkValueSiteIDPeriod?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+            {
+                label: "Inventory Removal",
+                url: "https://public.tableau.com/views/ShrinkQuanitybyInventoryRemoval/ShrinkQtybyInv_Removal?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link",
+            },
+        ];
+        /* eslint-enable max-len */
     }
-    get dashboardUrl(): string {
-        return this.dashUrl;
+
+    home(): void {
+        this.dashboardUrl = DEFAULT_DASHBOARD;
     }
+
+    toggleMode(): void {
+        this.themeService.toggleTheme();
+    }
+
+    updateDashboardToCommand(command: string): void {
+        const commandCode = CommandCode[command as keyof typeof CommandCode];
+        this.dashboardUrl = commandCodeToLink(commandCode) || DEFAULT_DASHBOARD;
+    }
+
     updateDashboardUrl(newUrl: string) {
-        this.dashUrl = newUrl;
+        this.dashboardUrl = newUrl;
     }
-    protected readonly faBars = faBars;
 }

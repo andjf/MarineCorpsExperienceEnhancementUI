@@ -1,90 +1,70 @@
+/* eslint-disable max-len */
 import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 import {
     AfterViewChecked,
     Component,
     ElementRef,
     EventEmitter,
-    Input,
-    OnInit,
     Output,
     ViewChild
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
-import {
-    GenerativeModel,
-    GoogleGenerativeAI,
-    HarmBlockThreshold,
-    HarmCategory
-} from "@google/generative-ai";
-
-const GEN_AI_MODEL = "gemini-pro";
-const GEN_AI_CONFIG = {
-    safetySettings: [
-        {
-            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-            threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
-        },
-    ],
-    temperature: 0.9,
-    top_p: 1,
-    top_k: 32,
-    maxOutputTokens: 100, // limit output
-    model: GEN_AI_MODEL,
-};
+import { MatIconModule } from "@angular/material/icon";
+import { CommandCode, commandCodeToLink } from "@models";
+import { ChatbotService } from "@services";
+import { ThemeService } from "app/theme.service";
 
 interface Message {
     content: string;
     sender: "chatbot" | "user";
 }
 
-const DEFAULT_ERROR_MESSAGE: Message = {
-    content: "Error connecting to model. Please ensure yor API key is correct",
-    sender: "chatbot"
-};
-
 @Component({
     selector: "app-chatbot",
     templateUrl: "./chatbot.component.html",
     standalone: true,
-    imports: [CommonModule, FormsModule, FontAwesomeModule],
+    imports: [CommonModule, FormsModule, HttpClientModule, MatIconModule],
     styleUrls: ["./chatbot.component.css"]
 })
-export class ChatbotComponent implements OnInit, AfterViewChecked {
+export class ChatbotComponent implements AfterViewChecked {
     @ViewChild("chatInput") chatInput!: ElementRef;
     @ViewChild("chatbotContent") chatbotContent!: ElementRef;
+
     @Output() newDashboardUrl = new EventEmitter<string>();
 
     showChatbot: boolean = false;
-    chatMessages: Message[] = [{ content: "Hello! How can I help you today?", sender: "chatbot" }];
-    newMessage: string = "";
-    commands: { [key: string]: string } = {
-        "camp pendleton": "PNM",
-        albany: "ALM",
-        "camp lejeune": "CLM",
-    };
-    urls: { [key: string]: string } = {
-        // eslint-disable-next-line max-len
-        PNM: "https://public.tableau.com/views/DistributionChartTypes/DistributionCharts?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link",
-        // eslint-disable-next-line max-len
-        ALM: "https://public.tableau.com/views/TheEndofanErafortheSwitch/Dashboard?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link",
-        // eslint-disable-next-line max-len
-        CLM: "https://public.tableau.com/views/DS41ApplicationAvocadoSales/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link",
-    };
-    chevronUp = faChevronUp;
-    paperPlane = faPaperPlane;
 
-    @Input() apiKey?: string;
-    model?: GenerativeModel;
+    constructor(private chatbotService: ChatbotService, private themeService: ThemeService) { }
 
-    ngOnInit() {
-        if (this.apiKey) { // if the apiKey was provided...
-            const generativeAI = new GoogleGenerativeAI(this.apiKey);
-            this.model = generativeAI.getGenerativeModel(GEN_AI_CONFIG);
-        }
+    get theme(): string {
+        return this.themeService.currentTheme;
     }
+
+    chatMessages: Message[] = [
+        {
+            content: "Hello! You can ask me general questions about the data and dashboards.",
+            sender: "chatbot"
+        },
+        {
+            content: "To ask data questions, start your chat 'data:', ex. 'data: which 5 commands have the most shrink?'",
+            sender: "chatbot"
+        },
+        {
+            content: "To see specific command dashboards, start your chat with 'dash:', ex. 'dash: show me the dashboard for Camp Lejeune'",
+            sender: "chatbot"
+        },
+    ];
+
+    get toggleButtonClasses(): string[] {
+        const classes = [this.theme];
+        if (this.showChatbot) {
+            classes.push("chevron-flip");
+        }
+        return classes;
+    }
+
+    currentMessage: string = "";
 
     ngAfterViewChecked() {
         this.scrollToBottom();
@@ -93,21 +73,34 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
     toggleChatbot() {
         this.showChatbot = !this.showChatbot;
     }
-    sendNewUrl(url: string) {
-        this.newDashboardUrl.emit(url);
-    }
+
     async sendMessage() {
-        if (this.newMessage.trim().length === 0) return;
-        const chat = this.newMessage;
-        this.newMessage = ""; // clear the chat input
+        const chat = this.currentMessage.trim();
+        if (chat.length === 0) return;
+
+        this.currentMessage = "";
+
         const textarea = this.chatInput.nativeElement as HTMLTextAreaElement;
         textarea.style.height = "25px";
         this.scrollToBottom();
+
         this.chatMessages.push({ content: chat, sender: "user" });
         try {
             this.chatMessages.push(await this.converse(chat));
         } catch (e) {
-            this.chatMessages.push(DEFAULT_ERROR_MESSAGE);
+            this.chatMessages.push({
+                content: "Sorry, I am having an issue with that question, try another.",
+                sender: "chatbot"
+            });
+        }
+    }
+
+    previousMessage(): void {
+        if (this.currentMessage.trim().length !== 0) return;
+        const lastUserMessage = this.chatMessages
+            .slice().reverse().find((m) => m.sender === "user");
+        if (lastUserMessage) {
+            this.currentMessage = lastUserMessage.content;
         }
     }
 
@@ -122,35 +115,76 @@ export class ChatbotComponent implements OnInit, AfterViewChecked {
         textarea.style.height = `${textarea.scrollHeight}px`;
     }
 
-    async converse(chat: string): Promise<Message> {
-        if (!this.model) return DEFAULT_ERROR_MESSAGE;
-        // eslint-disable-next-line max-len
-        let prompt = "You are helping a user understand different dashboards showing data from different marine base camps. Analyze their chat to see if they are asking to see a dashboard, graph or visualization of a specific camp. The name of the specific camp may be a three letter code or a name of a location. If they are explicitly asking to see the dashboard for a base, respond only with the word 'LOOKUP' followed by the name of the camp they requested to see. If they are not explicitly asking for a dashboard, respond with N/A";
-        let result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
-        if (result.response.text().includes("LOOKUP")) {
-            const camp = result.response.text().split("LOOKUP")[1].trim().toUpperCase();
-            // not a command code input
-            if (camp.length !== 3) {
-                const campName = result.response.text().substring(7).trim().toLowerCase();
-                if (this.urls.hasOwnProperty.call(this.commands, campName)) {
-                    this.sendNewUrl(this.urls[this.commands[campName]]);
-                    return { content: `Of course, here is the dashboard for base ${campName}`, sender: "chatbot" };
-                }
+    private getDashboardResponse(chat: string): Message {
+        const commandCodes = Object.keys(CommandCode);
+        const foundCommandCode = commandCodes.find((code) => chat.includes(code.toUpperCase()));
 
-                // eslint-disable-next-line max-len
-                return { content: `Sorry, I couldn't find a dashboard for base ${campName}, available bases are: ${Object.keys(this.commands)}`, sender: "chatbot" };
+        if (foundCommandCode) {
+            const commandCode = CommandCode[foundCommandCode as keyof typeof CommandCode];
+            const url = commandCodeToLink(commandCode);
+            if (url) {
+                this.newDashboardUrl.emit(url);
+                return {
+                    content: `Of course. Here is the dashboard for ${commandCode}`,
+                    sender: "chatbot",
+                };
             }
-            if (this.urls.hasOwnProperty.call(this.urls, camp)) {
-                this.sendNewUrl(this.urls[camp]);
-                // eslint-disable-next-line max-len
-                return { content: `Of course, here is the dashboard for base ${camp}`, sender: "chatbot" };
-            }
-            // eslint-disable-next-line max-len
-            return { content: `Sorry, I couldn't find a dashboard for base ${camp}, available bases are: ${Object.keys(this.urls)}`, sender: "chatbot" };
+            return {
+                content: `Sorry, I don't have a dashboard link for ${commandCode}`,
+                sender: "chatbot",
+            };
         }
-        // eslint-disable-next-line max-len
-        prompt = "You are helping a user understand different data they are being shown, and they may ask to see certain areas of the data. They may ask for the data for a certain camp. If they do, agree, saying that you will show them the data for that camp. They may ask for general information, do your best to answer. If you are unable to, tell them that you are unable to provide that information.";
-        result = await this.model.generateContent(`${prompt} Here is the chat from the user: ${chat}`);
-        return { content: result.response.text(), sender: "chatbot" };
+
+        const commandKeywords = Object.values(CommandCode);
+        const foundCommand = commandKeywords.find(
+            (keywords) => keywords.toUpperCase().split(" ")
+                .filter((keyword) => keyword.length > 0 && keyword !== "CAMP")
+                .some((keyword) => chat.toUpperCase().includes(keyword))
+        );
+
+        if (foundCommand) {
+            const url = commandCodeToLink(foundCommand);
+            if (url) {
+                this.newDashboardUrl.emit(url);
+                return {
+                    content: `Of course. Here is the dashboard for ${foundCommand}`,
+                    sender: "chatbot",
+                };
+            }
+            return {
+                content: `Sorry, I don't have a dashboard link for ${foundCommand}`,
+                sender: "chatbot",
+            };
+        }
+
+        return {
+            content: "Sorry, I couldn't tell which dashboard you were asking for. Please try again.",
+            sender: "chatbot",
+        };
+    }
+
+    async converse(chat: string): Promise<Message> {
+        const formattedChat = chat.trim().toLowerCase();
+
+        if (formattedChat.startsWith("data:")) {
+            const restOfChat = chat.substring("data:".length).trim();
+            const res = await this.chatbotService.executeEnglishQuery(restOfChat);
+            return {
+                // TODO: Instead of just stringifying the response,
+                // maybe we can format it in a more readable way.
+                // For example, if the response is an array of objects,
+                // we can display the objects in a table format.
+                content: JSON.stringify(res, null, 2),
+                sender: "chatbot",
+            };
+        }
+
+        if (formattedChat.startsWith("dash:")) {
+            const restOfChat = chat.substring("dash:".length).trim();
+            return this.getDashboardResponse(restOfChat);
+        }
+
+        const res = await this.chatbotService.generateAssistantResponse(chat);
+        return { content: res, sender: "chatbot" };
     }
 }
