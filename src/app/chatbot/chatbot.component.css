@@ -15,23 +15,6 @@
     z-index: 100;
 }
 
-.chatbot-container.lightMode{
-    font-family: Crimson Text, serif;
-    position: fixed;
-    bottom: 40px;
-    right: 0;
-    width: 350px;
-    height: 440px;
-    background-color: var(--secondary-color-dark);
-    border: 2px solid var(--secondary-color-light);
-    border-radius: 5px 5px 0 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease;
-    transform: translateY(100%);
-    z-index: 100;
-}
-
 .chatbot-open {
     transform: translateY(10%);
 }
@@ -48,7 +31,7 @@
     cursor: pointer;
 }
 
-.chatbot-header.lightMode {
+.chatbot-header.light {
     align-items: center;
     color: var(--secondary-color-light);
     font-size: 14px;
@@ -72,7 +55,7 @@
     transform: rotate(0deg);
 }
 
-.toggle-button.lightMode {
+.toggle-button.light {
     background: none;
     color: var(--secondary-color-light);
     border: none;
@@ -130,25 +113,14 @@
     float: left;
 }
 
-.user-message {
+.message.user {
     margin: 8px 5px 5px 8px;
     background-color: var(--primary-color-dark);
     padding: 10px;
     color: white;
-    background-color: var(--primary-color);
     margin: 8px 5px 5px 8px;
     border-radius: 10px 10px 0 10px;
     float: right;
-}
-
-.user-message.lightMode {
-    margin: 8px 5px 5px 8px;
-    background-color: var(--primary-color-light);
-    padding: 10px;
-    color: var(--secondary-color-light);
-    border-radius: 10px 10px 0 10px;
-    float: right;
-    clear: both;
 }
 
 .chatbot-content {

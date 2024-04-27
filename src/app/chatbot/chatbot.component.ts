@@ -13,6 +13,7 @@ import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
 import { CommandCode, commandCodeToLink } from "@models";
 import { ChatbotService } from "@services";
+import { ThemeService } from "app/theme.service";
 
 interface Message {
     content: string;
@@ -34,7 +35,11 @@ export class ChatbotComponent implements AfterViewChecked {
 
     showChatbot: boolean = false;
 
-    constructor(private chatbotService: ChatbotService) { }
+    constructor(private chatbotService: ChatbotService, private themeService: ThemeService) { }
+
+    get theme(): string {
+        return this.themeService.currentTheme;
+    }
 
     chatMessages: Message[] = [
         {
@@ -50,6 +55,14 @@ export class ChatbotComponent implements AfterViewChecked {
             sender: "chatbot"
         },
     ];
+
+    get toggleButtonClasses(): string[] {
+        const classes = [this.theme];
+        if (this.showChatbot) {
+            classes.push("chevron-flip");
+        }
+        return classes;
+    }
 
     currentMessage: string = "";
 
