@@ -1,0 +1,3 @@
+[submodule "MCCS-API"]
+	path = MCCS-API
+	url = https://github.com/andjf/MCCS-API
