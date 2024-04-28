@@ -10,7 +10,7 @@ import { TableauModule } from "ngx-tableau";
 import { ChatbotComponent } from "../chatbot/chatbot.component";
 
 // eslint-disable-next-line max-len
-const DEFAULT_DASHBOARD = "https://public.tableau.com/views/MCCSInventoryDataVisualizations/Dashboard1?:language=en-US&:sid=&:display_count=n&:origin=viz_share_link";
+const DEFAULT_DASHBOARD = "https://public.tableau.com/views/MCCSDashboard/Dashboard1?:language=en-US&publish=yes&:sid=&:display_count=n&:origin=viz_share_link";
 
 @Component({
     selector: "app-tableau",
